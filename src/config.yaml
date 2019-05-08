@@ -1,0 +1,16 @@
+mos_api:
+  encrypt_key: '321423u9y8d2fwfl'
+  enable: true
+  max_request: 0
+  deadline: 86400
+  server_port: 8088
+  database:
+    dialect: mysql
+    addr: root:sujianjun11@tcp(192.168.230.129:3306)/db_mos?charset=utf8&parseTime=true&loc=Local
+    automigrate:
+  redis:
+    max_idle: 5
+    idle_timeout_sec: 300
+    addr: '192.168.230.129:6379'
+    password: ""
+    expried: 86400
