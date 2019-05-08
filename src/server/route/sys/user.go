@@ -134,7 +134,7 @@ func UserList(ctx *gin.Context) {
 	// init params
 	querySet := make([]User, 0)
 	res := make([]UserInfo, 0)
-	userQueryDb := glo.Db
+	userQueryDb := glo.Db.Set("gorm:auto_preload", true)
 	var (
 		username string
 		total    int
@@ -167,6 +167,9 @@ func UserList(ctx *gin.Context) {
 		v.Email = r.Email
 		v.Phone = r.Phone
 		v.CreatedAt = comfunc.FormatTs(r.CreatedAt.Unix())
+		for _, i := range r.SystemGroups {
+			v.Groups = append(v.Groups, GroupInfSim{ID: i.ID, NickName: i.NickName, GroupName: i.GroupName})
+		}
 		res = append(res, v)
 	}
 	ctx.JSON(http.StatusOK, gin.H{

@@ -28,7 +28,13 @@ type UserInfo struct {
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
 	// Password    string `json:"password"`
-	CreatedAt string `json:"create_time"`
+	Groups    []GroupInfSim `json:"groups"`
+	CreatedAt string        `json:"create_time"`
+}
+type GroupInfSim struct {
+	ID        uint   `json:"id"`
+	GroupName string `json:"group_name"`
+	NickName  string `json:"nick_name"`
 }
 
 // 模糊查询用户名结构体
