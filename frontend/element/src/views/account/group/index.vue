@@ -278,8 +278,4 @@ export default {
   }
 }
 </script>
-<style>
-  .a_underline {
-    text-decoration:underline
-  }
-</style>
+
