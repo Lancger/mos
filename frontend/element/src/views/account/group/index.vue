@@ -18,8 +18,8 @@
         border
         style="width: 100%">
         <el-table-column
-          label="ID"
-          prop="id" />
+          type="index"
+          width="50" />
         <el-table-column
           label="用户组名称"
           prop="group_name" />  
@@ -38,9 +38,9 @@
           align="center"
           label="操作">
           <template slot-scope="scope">
-            <span class="el-tag el-tag--danger"><a @click="handleDelete(scope.$index, scope.row)">删除</a></span>
-            <span class="el-tag el-tag--primary"><a @click="handleEdit(scope.$index, scope.row)">修改</a></span>
-            <span class="el-tag el-tag--info"><a @click="handlePermMap(scope.$index, scope.row)">关联权限</a></span>
+            <span class="el-tag el-tag--danger"><a @click="handleDelete(scope.$index, scope.row)" class="a_underline">删除</a></span>
+            <span class="el-tag el-tag--primary"><a @click="handleEdit(scope.$index, scope.row)" class="a_underline">修改</a></span>
+            <span class="el-tag el-tag--info"><a @click="handlePermMap(scope.$index, scope.row)" class="a_underline">关联权限</a></span>
           </template>
         </el-table-column>
       </el-table>
@@ -279,7 +279,7 @@ export default {
 }
 </script>
 <style>
-  a {
+  .a_underline {
     text-decoration:underline
   }
 </style>

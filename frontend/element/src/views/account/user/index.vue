@@ -18,6 +18,9 @@
         border
         style="width: 100%">
         <el-table-column
+          type="index"
+          width="50" />
+        <el-table-column
           label="用户名"
           prop="username" />
         <el-table-column
@@ -42,8 +45,8 @@
           label="操作">
           <template slot-scope="scope">
             <!-- <span @click="handleEdit(scope.$index, scope.row)" class="el-tag el-tag--success">修改</span> -->
-            <span class="el-tag el-tag--danger"><a @click="handleDelete(scope.$index, scope.row)">删除</a></span>
-            <span class="el-tag el-tag--primary"><a @click="handleEdit(scope.$index, scope.row)">修改</a></span>
+            <span class="el-tag el-tag--danger"><a @click="handleDelete(scope.$index, scope.row)" class="a_underline">删除</a></span>
+            <span class="el-tag el-tag--primary"><a @click="handleEdit(scope.$index, scope.row)" class="a_underline">修改</a></span>
           </template>
         </el-table-column>
       </el-table>

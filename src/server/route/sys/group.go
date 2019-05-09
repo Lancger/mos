@@ -202,9 +202,10 @@ func GroupDelete(ctx *gin.Context) {
 
 // GroupMsg 根据用户组ID获取所属用户ID列表
 func GroupMsg(ctx *gin.Context) {
-	id := ctx.Query("id")
+	var m []UserGroupMap
 	userIDArr := []uint{}
 
+	id := ctx.Query("id")
 	if id == `` {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.ERROR,
@@ -213,7 +214,7 @@ func GroupMsg(ctx *gin.Context) {
 		})
 		return
 	}
-	var m []UserGroupMap
+
 	if err := glo.Db.Model(&UserGroupMap{}).Where("system_group_id = ?", id).Find(&m).Error; err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.ERROR,
