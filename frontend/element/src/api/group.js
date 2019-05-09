@@ -43,6 +43,7 @@ export function getGroupMsg(id) {
   })
 }
 
+// 更新用户组信息
 export function updateGroup(group_data) {
   return request({
     url: '/sys/GroupUpdate',
@@ -54,5 +55,30 @@ export function updateGroup(group_data) {
     }
   })
 }
+
+// 获取用户组权限ID
+export function getGroupPermMap(id) {
+  return request({
+    url: '/sys/GroupPermission',
+    method: 'get',
+    params: {
+      id: id
+    }
+  })
+}
+
+// 获取用户组权限ID
+export function updateGroupPerm(data) {
+  return request({
+    url: '/sys/GroupPermUpdate',
+    method: 'post',
+    data: {
+      id: data.id,
+      perm_selected: data.perm_selected
+    }
+  })
+}
+
+
 
 

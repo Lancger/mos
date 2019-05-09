@@ -73,6 +73,12 @@ export const constantRoutes = [
         name: 'Group',
         component: () => import('@/views/account/group/index'),
         meta: { title: '用户组管理', icon: 'peoples' }
+      },
+      {
+        path: 'perm',
+        name: 'Perm',
+        component: () => import('@/views/perm/index'),
+        meta: { title: '权限管理', icon: 'password' }
       }
     ]
   },

@@ -38,21 +38,9 @@
           align="center"
           label="操作">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              icon="el-icon-edit"
-              @click="handlePermMap(scope.$index, scope.row)">关联权限</el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              icon="el-icon-edit"
-              @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              icon="el-icon-delete"
-              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <span class="el-tag el-tag--danger"><a @click="handleDelete(scope.$index, scope.row)">删除</a></span>
+            <span class="el-tag el-tag--primary"><a @click="handleEdit(scope.$index, scope.row)">修改</a></span>
+            <span class="el-tag el-tag--info"><a @click="handlePermMap(scope.$index, scope.row)">关联权限</a></span>
           </template>
         </el-table-column>
       </el-table>
@@ -83,7 +71,7 @@
           </el-form-item>
         </el-form>
       </el-dialog>
-      <el-dialog :visible.sync="dialogGroupMapFormVisible" title="用户组关联权限">
+      <el-dialog :visible.sync="dialogGroupPermFormVisible" title="用户组关联权限">
         <el-form ref="mapForm" :model="group_map_form" label-width="90px">
           <el-form-item label="ID">
             <el-input v-model="group_map_form.id" disabled />
@@ -93,14 +81,14 @@
           </el-form-item>
           <el-form-item label="权限">
             <el-transfer
-              v-model="group_map_form.permSelected"
+              v-model="group_map_form.perm_selected"
               :data="permArray"
-              :props="{key: 'id', label: 'perm_name'}"
+              :props="{key: 'id', label: 'nick_name'}"
               :titles="['未选权限', '已选权限']" />
           </el-form-item>
           <el-form-item align="right" style="padding-right: 48px">
-            <el-button type="primary" @click="mapSourceData">确定</el-button>
-            <el-button @click="dialogGroupMapFormVisible = false">取消</el-button>
+            <el-button type="primary" @click="updateGroupPerm">确定</el-button>
+            <el-button @click="dialogGroupPermFormVisible = false">取消</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -109,8 +97,9 @@
 </template>
 
 <script>
-import { getGroupList, addGroup, deleteGroup, getGroupMsg, updateGroup } from '@/api/group'
+import { getGroupList, addGroup, deleteGroup, getGroupMsg, updateGroup, getGroupPermMap, updateGroupPerm } from '@/api/group'
 import { getAccountMsg } from '@/api/user'
+import { getPermList } from '@/api/perm'
 // import { setGroupTicketSourceMap, setGroupTicketPermMap, getGroupTicketWorkMsg, getGroupTicketWorkMap } from '@/api/ticket'
 import Pagination from '@/components/Pagination'
 
@@ -135,7 +124,7 @@ export default {
       // 新增用户组dialog是否显示
       dialogGroupFormVisible: false,
       // 用户组关联权限 dialog是否显示
-      dialogGroupMapFormVisible: false,
+      dialogGroupPermFormVisible: false,
 
       group_form: {
         id: undefined,
@@ -146,12 +135,13 @@ export default {
       group_map_form: {
         id: undefined,
         name: '',
-        permSelected: []
+        perm_selected: []
       }
     }
   },
   created() {
     this.getGroupList()
+    this.getPermList()
   },
   methods: {
     resetTemp() {
@@ -164,27 +154,35 @@ export default {
       this.group_map_form = {
         id: undefined,
         name: '',
-        permSelected: []
+        perm_selected: []
       }
     },
     handlePermMap(index, row) {
-      getGroupPermMap(row.id).then(response => {
-        this.$set(this.group_map_form, 'permSelected', response.data)
         this.$set(this.group_map_form, 'id', row.id)
+        this.$set(this.group_map_form, 'name', row.nick_name)
+      getGroupPermMap(row.id).then(response => {
+        console.log(response.data)
+        this.$set(this.group_map_form, 'perm_selected', response.data)
         // console.log(this.group_map_form.ticketSourceSelected)
       })
-      this.dialogGroupMapFormVisible = true
+      this.dialogGroupPermFormVisible = true
     },
-
-    mapSourceData() {
+    // 获取权限列表
+    getPermList() {
       const This = this
-      setGroupTicketSourceMap(this.group_map_form).then(response => {
+      getPermList().then(response => {
+        This.permArray = response.data
+      })
+    },
+    updateGroupPerm() {
+      const This = this
+      updateGroupPerm(this.group_map_form).then(response => {
         this.$message({
           message: response.message,
           type: 'success',
-          duration: 2000,
+          duration: 1000,
           onClose: function refresh() {
-            This.dialogGroupMapFormVisible = false
+            This.dialogGroupPermFormVisible = false
           }
         })
       })
@@ -280,3 +278,8 @@ export default {
   }
 }
 </script>
+<style>
+  a {
+    text-decoration:underline
+  }
+</style>

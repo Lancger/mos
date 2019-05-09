@@ -17,22 +17,29 @@ func InitRoute(engine *gin.Engine) {
 	}
 	// engine.Use(jwt.JWT())
 	// 用户路由
-	apiUser := engine.Group("/sys")
+	sysApi := engine.Group("/sys")
 	{
-		apiUser.POST("/UserLogout", UserLogout)
-		apiUser.POST("/UserAdd", UserAdd)
-		apiUser.GET("/UserList", UserList)
-		apiUser.POST("/UserUpdate", UserUpdate)
-		apiUser.POST("/UserDelete", UserDelete)
-		apiUser.GET("/AccountInfo", AccountInfo)
-		apiUser.GET("/UserMsg", UserMsg)
+		sysApi.POST("/UserLogout", UserLogout)
+		sysApi.POST("/UserAdd", UserAdd)
+		sysApi.GET("/UserList", UserList)
+		sysApi.POST("/UserUpdate", UserUpdate)
+		sysApi.POST("/UserDelete", UserDelete)
+		sysApi.GET("/AccountInfo", AccountInfo)
+		sysApi.GET("/UserMsg", UserMsg)
 
-		apiUser.GET("/GroupList", GroupList)
-		apiUser.POST("/GroupAdd", GroupAdd)
-		apiUser.POST("/GroupDelete", GroupDelete)
-		apiUser.POST("/GroupUpdate", GroupUpdate)
+		sysApi.GET("/GroupList", GroupList)
+		sysApi.POST("/GroupAdd", GroupAdd)
+		sysApi.POST("/GroupDelete", GroupDelete)
+		sysApi.POST("/GroupUpdate", GroupUpdate)
+		sysApi.GET("/GroupMsg", GroupMsg)
+		sysApi.POST("/GroupPermUpdate", GroupPermUpdate)
+		sysApi.GET("/GroupPermission", GroupPermission)
 
-		apiUser.GET("/GroupMsg", GroupMsg)
+		sysApi.GET("/PermissionList", PermissionList)
+		sysApi.GET("/PermissionMsg", PermissionMsg)
+		sysApi.POST("/PermissionAdd", PermissionAdd)
+		sysApi.POST("/PermissionDelete", PermissionDelete)
+		sysApi.POST("/PermissionUpdate", PermissionUpdate)
 
 	}
 }

@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"mos/src/pkg/e"
+	"mos/src/pkg/setting"
 	"mos/src/pkg/util"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,7 @@ import (
 // ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 路由函数
 // ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // InitTable 初始化表结构
 func InitTable(ctx *gin.Context) {
 	if !glo.Db.HasTable(&User{}) {
@@ -26,6 +28,11 @@ func InitTable(ctx *gin.Context) {
 	}
 	if !glo.Db.HasTable(&SystemGroup{}) {
 		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&SystemGroup{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !glo.Db.HasTable(&Permission{}) {
+		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Permission{}).Error; err != nil {
 			panic(err)
 		}
 	}
@@ -283,38 +290,45 @@ func UserLogout(ctx *gin.Context) {
 
 // AccountInfo 用户信息
 func AccountInfo(ctx *gin.Context) {
-	// db_instance := glo.Db
 	accountMsg := AccountMsg{
 		Name:   "nil",
 		Roles:  []string{},
 		Perms:  []string{},
-		Avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+		Avatar: setting.Avatar,
 	}
-	// log.Println(accountMsg)
+	var (
+		u User
+	)
+
 	token := ctx.GetHeader("X-Token")
 	if token == `` {
 		ctx.JSON(http.StatusOK, gin.H{
-			"code":    50000,
+			"code":    e.ERROR,
 			"message": comfunc.TokenInvaild,
 			"data":    accountMsg,
 		})
 		return
 	}
 	claims, err := util.ParseToken(token)
-	// rdsClient := glo.RdsDb.Get()
-	// redisKey := fmt.Sprintf("auth_account_%s", token)
-	// _, err := rdsClient.Do("get", redisKey)
+
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
-			"code":    50000,
+			"code":    e.ERROR,
 			"message": err,
 			"data":    accountMsg,
 		})
 		return
 	}
 	accountMsg.Name = claims.Username
+	// 获取用户组信息
+	if err = glo.Db.Set("gorm:auto_preload", true).Model(&User{}).Where("username = ?", accountMsg.Name).First(&u).Error; err == nil {
+		for _, i := range u.SystemGroups {
+			accountMsg.Roles = append(accountMsg.Roles, i.GroupName)
+		}
+		accountMsg.Perms, _ = u.getPermission()
+	}
 	ctx.JSON(http.StatusOK, gin.H{
-		"code":    20000,
+		"code":    e.SUCCESS,
 		"message": "success",
 		"data":    accountMsg,
 	})

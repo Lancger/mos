@@ -2,6 +2,7 @@ package sys
 
 import (
 	"fmt"
+	"log"
 	"mos/src/glo"
 	"mos/src/glo/comfunc"
 	"mos/src/pkg/e"
@@ -207,7 +208,7 @@ func GroupMsg(ctx *gin.Context) {
 	if id == `` {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.ERROR,
-			"message": "请求参数错误",
+			"message": e.PARAM_ERROR_MSG,
 			"data":    userIDArr,
 		})
 		return
@@ -228,6 +229,43 @@ func GroupMsg(ctx *gin.Context) {
 		"code":    e.SUCCESS,
 		"message": "获取成功",
 		"data":    userIDArr,
+	})
+	return
+}
+
+// GroupPermUpdate 用户组权限更新
+func GroupPermUpdate(ctx *gin.Context) {
+	type reqPostData struct {
+		ID         uint   `json:"id"`
+		PermIDList []uint `json:"perm_selected"`
+	}
+	var (
+		reqData reqPostData
+	)
+	if err := ctx.BindJSON(&reqData); err != nil {
+		ctx.JSON(http.StatusOK, gin.H{
+			"code":    e.PARAM_ERROR,
+			"message": e.PARAM_ERROR_MSG,
+		})
+		return
+	}
+	// glo.Db.Model(&UserGroupMap{}).Where("system_group_id = ?", reqData.ID).Unscoped().Delete(&UserGroupMap{})
+	if err := glo.Db.Model(&GroupPermMap{}).Where("system_group_id = ?", reqData.ID).Unscoped().Delete(&GroupPermMap{}); err != nil {
+		log.Printf("%s", err.Error)
+	}
+	if len(reqData.PermIDList) > 0 {
+		var v GroupPermMap
+		for _, i := range reqData.PermIDList {
+			v = GroupPermMap{
+				GroupID:      reqData.ID,
+				PermissionID: i,
+			}
+			glo.Db.Create(&v)
+		}
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    e.SUCCESS,
+		"message": e.SUCCESS_MSG,
 	})
 	return
 }
