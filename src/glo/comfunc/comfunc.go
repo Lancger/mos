@@ -19,6 +19,12 @@ func FormatTs(ts int64) (res string) {
 	return
 }
 
+// FormatShortTs 格式化时间戳为字符串
+func FormatShortTs(ts int64) (res string) {
+	res = time.Unix(ts, 0).Format("20060102150405")
+	return
+}
+
 // FlorPageInt 分页整除判断
 func FlorPageInt(pageSize int, total int) (res int) {
 	res = 0

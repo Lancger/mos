@@ -54,13 +54,53 @@ export const constantRoutes = [
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/ticket',
+    component: Layout,
+    alwaysShow: true,
+    name: 'Ticket',
+    meta: { title: '工单管理', icon: 'message' },
+    children: [
+      {
+        path: 'ticket_list',
+        name: 'TicketList',
+        component: () => import('@/views/ticket/ticket-table/index'),
+        meta: { title: '工单列表', icon: 'news' }
+      },
+      {
+        path: 'ticket_msg',
+        name: 'TicketMsg',
+        hidden: true,
+        component: () => import('@/views/ticket/ticket/msg'),
+        meta: { title: '工单信息', icon: 'edit' }
+      },
+      {
+        path: 'ticket_add',
+        name: 'TicketAdd',
+        component: () => import('@/views/ticket/ticket/create'),
+        meta: { title: '创建工单', icon: 'edit' }
+      },
+      {
+        path: 'ticket_edit',
+        name: 'TicketEdit',
+        hidden: true,
+        component: () => import('@/views/ticket/ticket/edit'),
+        meta: { title: '修改工单', icon: 'edit' }
+      },
+      {
+        path: 'ticket_type',
+        name: 'TicketType',
+        component: () => import('@/views/ticket/ticket-config/index'),
+        meta: { title: '工单属性', icon: 'resource' }
+      }
+    ]
+  },
   {
     path: '/sys',
     component: Layout,
     alwaysShow: true,
     name: 'Sys',
-    meta: { title: '系统管理', icon: 'user' },
+    meta: { title: '系统管理', icon: 'cog' },
     children: [
       {
         path: 'user',
@@ -79,6 +119,12 @@ export const constantRoutes = [
         name: 'Perm',
         component: () => import('@/views/perm/index'),
         meta: { title: '权限管理', icon: 'password' }
+      },
+      {
+        path: 'project',
+        name: 'Project',
+        component: () => import('@/views/project/index'),
+        meta: { title: '项目管理', icon: 'step' }
       }
     ]
   },

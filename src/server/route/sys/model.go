@@ -5,17 +5,20 @@ import (
 	"log"
 	"mos/src/glo"
 
+	"mos/src/server/route/ticket"
+
 	"github.com/jinzhu/gorm"
 )
 
 // User 用户表结构体
 type User struct {
 	// ID       int    `gorm:"type:int(10);primary_key;column:id;AUTO_INCREMENT;"`
-	UserName     string        `gorm:"type:varchar(32);unique;not null;column:username"`
-	NickName     string        `gorm:"type:varchar(32);not null;column:nick_name"`
-	Password     string        `gorm:"type:varchar(64);column:password"`
-	Email        string        `gorm:"type:varchar(64);column:email"`
-	Phone        string        `gorm:"type:varchar(16);column:phone"`
+	UserName     string `gorm:"type:varchar(32);unique;not null;column:username"`
+	NickName     string `gorm:"type:varchar(32);unique;not null;column:nick_name"`
+	Password     string `gorm:"type:varchar(64);column:password"`
+	Email        string `gorm:"type:varchar(64);column:email"`
+	Phone        string `gorm:"type:varchar(16);column:phone"`
+	Tickets      []ticket.Ticket
 	SystemGroups []SystemGroup `gorm:"many2many:user_group"`
 	gorm.Model
 }
@@ -23,7 +26,7 @@ type User struct {
 // Permission 用户权限
 type Permission struct {
 	Name         string        `gorm:"type:varchar(32);unique;not null;column:name"`
-	NickName     string        `gorm:"type:varchar(32);not null;column:nick_name"`
+	NickName     string        `gorm:"type:varchar(32);unique;not null;column:nick_name"`
 	Type         string        `gorm:"type:varchar(32);not null;column:type"`
 	SystemGroups []SystemGroup `gorm:"many2many:group_permission"`
 	gorm.Model
@@ -64,10 +67,11 @@ type UserInfo struct {
 
 // AccountMsg 账号信息
 type AccountMsg struct {
-	Name   string   `json:"name"`
-	Roles  []string `json:"roles"`
-	Perms  []string `json:"perms"`
-	Avatar string   `json:"avatar"`
+	Name     string   `json:"name"`
+	NickName string   `json:"nick_name"`
+	Roles    []string `json:"roles"`
+	Perms    []string `json:"perms"`
+	Avatar   string   `json:"avatar"`
 }
 
 // UserMsgSim 用户信息

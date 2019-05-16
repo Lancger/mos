@@ -270,3 +270,48 @@ func GroupPermUpdate(ctx *gin.Context) {
 	})
 	return
 }
+
+// GroupUserCas 获取用户组及用户cascard
+func GroupUserCas(ctx *gin.Context) {
+	type Usg struct {
+		Label string `json:"label"`
+		Value string `json:"value"`
+	}
+	type Grp struct {
+		Label    string `json:"label"`
+		Value    string `json:"value"`
+		Children []Usg  `json:"children"`
+	}
+	var (
+		querySet []SystemGroup
+		g        Grp
+		res      []Grp
+	)
+	queryDb := glo.Db.Set("gorm:auto_preload", true)
+	if err := queryDb.Model(&SystemGroup{}).Find(&querySet).Error; err != nil {
+		ctx.JSON(http.StatusOK, gin.H{
+			"code":    e.ERROR,
+			"message": e.ERROR_MSG,
+			"data":    []string{},
+		})
+		return
+	}
+	for _, r := range querySet {
+		g = Grp{}
+		g.Label = r.NickName
+		g.Value = r.NickName
+		for _, s := range r.Users {
+			g.Children = append(g.Children, Usg{
+				Label: s.NickName,
+				Value: s.NickName,
+			})
+		}
+		res = append(res, g)
+	}
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    e.SUCCESS,
+		"message": e.SUCCESS,
+		"data":    res,
+	})
+	return
+}

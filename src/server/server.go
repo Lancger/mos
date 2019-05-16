@@ -2,7 +2,9 @@ package server
 
 import (
 	"fmt"
+	projectutil "mos/src/server/route/project"
 	sysutil "mos/src/server/route/sys"
+	ticketutil "mos/src/server/route/ticket"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -25,6 +27,8 @@ func Serve() {
 	engine.POST("/UserLogin", sysutil.UserLogin)
 
 	sysutil.InitRoute(engine)
+	ticketutil.InitRoute(engine)
+	projectutil.InitRoute(engine)
 	// apiV1 := engine.Group("/api/v1")
 	// 用户组路由
 	// apiV1.POST("/AddGroup", AddGroup)

@@ -5,7 +5,8 @@ import { resetRouter } from '@/router'
 const state = {
   token: getToken(),
   name: '',
-  avatar: ''
+  avatar: '',
+  perms: []
 }
 
 const mutations = {
@@ -15,8 +16,14 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
+  SET_NICKNAME: (state, nick_name) => {
+    state.nick_name = nick_name
+  },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_PERMS: (state, perms) => {
+    state.perms = perms
   }
 }
 
@@ -45,10 +52,13 @@ const actions = {
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-
-        const { name, avatar } = data
+        if (data.perms && data.perms.length > 0) { // 验证返回的roles是否是一个非空数组
+          commit('SET_PERMS', data.perms)
+        }
+        const { name, nick_name, avatar } = data
 
         commit('SET_NAME', name)
+        commit('SET_NICKNAME', nick_name)
         commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {

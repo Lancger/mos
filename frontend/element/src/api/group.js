@@ -78,6 +78,13 @@ export function updateGroupPerm(data) {
     }
   })
 }
+// 用户组cascard
+export function getGroupUserOptions(id) {
+  return request({
+    url: '/sys/GroupUserCas',
+    method: 'get'
+  })
+}
 
 
 

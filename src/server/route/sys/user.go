@@ -11,6 +11,8 @@ import (
 	"mos/src/pkg/e"
 	"mos/src/pkg/setting"
 	"mos/src/pkg/util"
+	"mos/src/server/route/project"
+	"mos/src/server/route/ticket"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,6 +35,36 @@ func InitTable(ctx *gin.Context) {
 	}
 	if !glo.Db.HasTable(&Permission{}) {
 		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Permission{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !glo.Db.HasTable(&ticket.Ticket{}) {
+		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&ticket.Ticket{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !glo.Db.HasTable(&ticket.TicketHistory{}) {
+		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&ticket.TicketHistory{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !glo.Db.HasTable(&ticket.TicketType{}) {
+		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&ticket.TicketType{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !glo.Db.HasTable(&ticket.TicketSource{}) {
+		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&ticket.TicketSource{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !glo.Db.HasTable(&ticket.TicketLevel{}) {
+		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&ticket.TicketLevel{}).Error; err != nil {
+			panic(err)
+		}
+	}
+	if !glo.Db.HasTable(&project.Project{}) {
+		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&project.Project{}).Error; err != nil {
 			panic(err)
 		}
 	}
@@ -154,7 +186,7 @@ func UserList(ctx *gin.Context) {
 	}
 	if err := userQueryDb.Offset((page - 1) * pageSize).Limit(pageSize).Order("id desc").Find(&querySet).Count(&total).Error; err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
-			"code":    50000,
+			"code":    e.ERROR,
 			"message": "get user query error, " + err.Error(),
 		})
 		return
@@ -291,10 +323,11 @@ func UserLogout(ctx *gin.Context) {
 // AccountInfo 用户信息
 func AccountInfo(ctx *gin.Context) {
 	accountMsg := AccountMsg{
-		Name:   "nil",
-		Roles:  []string{},
-		Perms:  []string{},
-		Avatar: setting.Avatar,
+		Name:     "nil",
+		NickName: "nil",
+		Roles:    []string{},
+		Perms:    []string{},
+		Avatar:   setting.Avatar,
 	}
 	var (
 		u User
@@ -326,6 +359,7 @@ func AccountInfo(ctx *gin.Context) {
 			accountMsg.Roles = append(accountMsg.Roles, i.GroupName)
 		}
 		accountMsg.Perms, _ = u.getPermission()
+		accountMsg.NickName = u.NickName
 	}
 	ctx.JSON(http.StatusOK, gin.H{
 		"code":    e.SUCCESS,

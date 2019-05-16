@@ -51,7 +51,7 @@
         </el-table-column>
       </el-table>
       <pagination v-show="total>0" :total="total" :current_page.sync="listQuery.current_page" :page_size.sync="listQuery.page_size" align="right" @pagination="getList" />
-      <el-dialog :visible.sync="dialogAccountFormVisible" title="新增用户">
+      <el-dialog :visible.sync="dialogAccountFormVisible" title="新增/修改用户">
         <el-form ref="accountForm" :model="account_form" label-width="120px">
           <el-form-item label="ID">
             <el-input v-model="account_form.id" disabled />

@@ -41,5 +41,7 @@ func InitRoute(engine *gin.Engine) {
 		sysAPI.POST("/PermissionDelete", PermissionDelete)
 		sysAPI.POST("/PermissionUpdate", PermissionUpdate)
 
+		sysAPI.GET("/GroupUserCas", GroupUserCas)
+
 	}
 }
