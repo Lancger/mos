@@ -24,6 +24,7 @@ type RedisConfig struct {
 
 // MosAPICfg Struct
 type MosAPICfg struct {
+	Port       uint           `yaml:"port"`
 	EncryptKey string         `yaml:"encrypt_key"`
 	Enable     bool           `yaml:"enable"`
 	MaxRequest string         `yaml:"max_request"`

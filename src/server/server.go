@@ -2,6 +2,8 @@ package server
 
 import (
 	"fmt"
+	"mos/src/glo"
+	jenkinsutil "mos/src/server/route/jenkins"
 	projectutil "mos/src/server/route/project"
 	sysutil "mos/src/server/route/sys"
 	ticketutil "mos/src/server/route/ticket"
@@ -25,10 +27,12 @@ func Serve() {
 
 	engine.POST("/InitTable", sysutil.InitTable)
 	engine.POST("/UserLogin", sysutil.UserLogin)
+	engine.POST("/JenkinsPost", jenkinsutil.JenkinsPost)
 
 	sysutil.InitRoute(engine)
 	ticketutil.InitRoute(engine)
 	projectutil.InitRoute(engine)
+	jenkinsutil.InitRoute(engine)
 	// apiV1 := engine.Group("/api/v1")
 	// 用户组路由
 	// apiV1.POST("/AddGroup", AddGroup)
@@ -36,6 +40,6 @@ func Serve() {
 	// sysutil.InitRoute(engine)
 	// iaas.InitRoute(engine)
 
-	portVal := fmt.Sprintf(`127.0.0.1:99`)
+	portVal := fmt.Sprintf("0.0.0.0:%d", glo.Config.MosAPI.ServerPort)
 	engine.Run(portVal)
 }

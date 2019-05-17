@@ -11,6 +11,7 @@ import (
 	"mos/src/pkg/e"
 	"mos/src/pkg/setting"
 	"mos/src/pkg/util"
+	"mos/src/server/route/jenkins"
 	"mos/src/server/route/project"
 	"mos/src/server/route/ticket"
 
@@ -23,6 +24,11 @@ import (
 
 // InitTable 初始化表结构
 func InitTable(ctx *gin.Context) {
+	if !glo.Db.HasTable(&jenkins.JenkinsJob{}) {
+		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&jenkins.JenkinsJob{}).Error; err != nil {
+			panic(err)
+		}
+	}
 	if !glo.Db.HasTable(&User{}) {
 		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{}).Error; err != nil {
 			panic(err)

@@ -1,6 +1,7 @@
 package project
 
 import (
+	"mos/src/server/route/jenkins"
 	"mos/src/server/route/ticket"
 
 	"github.com/jinzhu/gorm"
@@ -8,8 +9,9 @@ import (
 
 // Project 项目结构体
 type Project struct {
-	Name     string `gorm:"type:varchar(32);unique;not null;column:name"`
-	Tickekts []ticket.Ticket
+	Name       string `gorm:"type:varchar(32);unique;not null;column:name"`
+	Tickekts   []ticket.Ticket
+	JenkinsJob []jenkins.JenkinsJob
 	gorm.Model
 }
 
