@@ -133,14 +133,14 @@
                 <el-table-column
                   label="时间"
                   prop="create_time"
-                  width=180 />  
+                  width=180 />
               </el-table>
               <div slot="reference" class="name-wrapper">
                 <span class="el-tag el-tag-blue">{{ scope.row.title }}</span>
               </div>
             </el-popover>
           </template>
-        </el-table-column>  
+        </el-table-column>
         <el-table-column
           label="所属项目"
           prop="project"
@@ -377,7 +377,7 @@ export default {
     ticket_unfinish(newval, oldval) {
       const This = this
       if (This.myself_ticket === false) {
-        console.log("ok")
+        // console.log("ok")
         This.$set(This.listQuery, 'dealer', '')
       } else {
         This.$set(This.listQuery, 'dealer', This.queryUser)
@@ -543,7 +543,7 @@ export default {
         title: row.title,
         content: '',
         to: '',
-        from: This.queryUser,
+        from: This.queryUser
       }
       This.dialogSendStatus = 'send'
       This.dialogTicketChangeVisible = true
@@ -558,7 +558,7 @@ export default {
         title: row.title,
         content: '',
         to: '',
-        from: This.queryUser,
+        from: This.queryUser
       }
       This.dialogSendStatus = 'change'
       This.dialogTicketChangeVisible = true
@@ -605,15 +605,15 @@ export default {
     handleTicketCtl(row, ctl) {
       const This = this
       if (ctl === 'mark') {
-        This.ticketCtlTitle = "添加处理记录"
+        This.ticketCtlTitle = '添加处理记录'
       } else if (ctl === 'finish') {
-        This.ticketCtlTitle = "处理完毕"
+        This.ticketCtlTitle = '处理完毕'
       } else if (ctl === 'close') {
-        This.ticketCtlTitle = "结单"
+        This.ticketCtlTitle = '结单'
       } else {
         This.$message({
-          message: response.message,
-          type: 'success',
+          message: '操作类型错误',
+          type: 'error',
           duration: 2000,
           onClose: function refresh() {
             This.getList()
@@ -738,6 +738,6 @@ export default {
   .popover {
     background: #909399;
   }
-  
+
 </style>
 
