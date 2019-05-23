@@ -33,6 +33,8 @@ POST    http://127.0.0.1:8000/InitTable
 
 # 二、运行
 ```
+后端：
+
 方式一：
 
  go build
@@ -40,4 +42,9 @@ POST    http://127.0.0.1:8000/InitTable
  
  方式二：
  go run main.go -c config.yaml
+ 
+ 
+ 前端：
+ npm install
+ npm run dev
 ```
