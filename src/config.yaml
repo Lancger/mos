@@ -7,11 +7,11 @@ mos_api:
   server_port: 335
   database:
     dialect: mysql
-    addr: root:sujianjun11@tcp(192.168.230.129:3306)/db_mos?charset=utf8&parseTime=true&loc=Local
+    addr: root:123456@tcp(127.0.0.1:3306)/db_mos?charset=utf8&parseTime=true&loc=Local
     automigrate:
   redis:
     max_idle: 5
     idle_timeout_sec: 300
-    addr: '192.168.230.129:6379'
+    addr: '127.0.0.1:6379'
     password: ""
     expried: 86400
