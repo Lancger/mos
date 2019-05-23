@@ -17,6 +17,18 @@ curl -X POST -H "'Content-type':'application/json'" -d {"title": "构建标题",
 
 ```
 
+```
+初始化数据库表结构
+mysql -uroot -p123456 -e "create database db_mos;"
+
+POST    http://127.0.0.1:8000/InitTable
+
+{
+    "code": 20000,
+    "message": "初始化表成功"
+}
+```
+
 # 二、运行
 ```
 方式一：
