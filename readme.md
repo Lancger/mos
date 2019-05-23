@@ -15,6 +15,15 @@ git clone -b iaas https://github.com/Lancger/mos.git
 ```
 curl -X POST -H "'Content-type':'application/json'" -d {"title": "构建标题", "project": "所属项目", "module": "构建模块", "hosts": "'$hosts'", "build_number": "'$BUILD_NUMBER'", "tag": "'$tag'", "build_user": "'$BUILD_USER'", "status": "'$BUILD_STATUS'", "console_url": "'$BUILD_URL'"}
 
+```
 
+# 二、运行
+```
+方式一：
 
+ go build
+ ./src -c config.yaml
+ 
+ 方式二：
+ go run main.go -c config.yaml
 ```
